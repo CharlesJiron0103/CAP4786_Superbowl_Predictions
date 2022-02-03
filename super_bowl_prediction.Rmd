@@ -1,0 +1,225 @@
+---
+title: "Super Bowl Prediction"
+Name: "Charles Jiron"
+Date: "2-1-2022"
+output: html_notebook
+---
+
+# Installing Packages
+
+```{r}
+install.packages("tidyverse")
+install.packages("readr")
+install.packages("ggrepel")
+```
+
+
+# Load the Packages
+
+```{r}
+library(tidyverse)
+library(readr)
+library(ggrepel)
+```
+
+# Getting the data set
+## Data.world Set
+
+```{r}
+Super_bowl <- read.csv("Super_Bowl.csv")
+
+Super_bowl
+```
+
+## Filter out the Point.Difference to see who is likely to win a superbowl.
+
+```{r}
+pointDifference <- filter(Super_bowl, Point.Difference >= 25)
+
+pointDifference
+```
+
+## Selecting four columns to work with for prediction
+
+```{r}
+dataSelection <- select(pointDifference, Winner,Winning.Pts,Losing.Pts,Point.Difference)
+
+dataSelection
+```
+
+## Plotting my Bar Graph
+
+```{r}
+ggplot(data = dataSelection, mapping = aes(x = Winning.Pts, y = Point.Difference, fill = Winner, bins = 10)) + geom_bar(stat = "identity") + labs(title = "Point Difference Vs. Winning Points", subtitle = "Super Bowl Historics\nPoint Difference Greater Than 25", x = "Winning Point Margin", y = "Point Difference Margin", caption = "Data World Set")
+```
+
+## Predicting my First Super Bowl Winner
+
+
+```{r}
+# Build a linear Regression
+
+modelOne <- lm(Winning.Pts ~ Losing.Pts, data = dataSelection)
+
+modelOne
+
+# Adding Prediction 
+
+super_predict <- predict(modelOne, interval = "prediction")
+
+super_predict
+
+superFinalPredict <- cbind(dataSelection, super_predict)
+
+superFinalPredict
+
+# Regression Line and Super History Draft Plot
+
+predictionOne <- ggplot(data = superFinalPredict, mapping = aes(x = Winning.Pts, y = Losing.Pts)) + geom_point(mapping = aes(color = Winner, size = Winner)) + stat_smooth(method = lm) + labs(title = "Draft Prediction Plot One", subtitle = "Regression Line & Super Bowl Historics\nWinning Team Points Vs. Losing Team Points", x = "Winning Points", y = "Losing Points", caption = "Data World Dat Set")
+
+predictionOne
+```
+
+```{r}
+# Prediction Test One
+
+test <- data.frame(Losing.Pts = c(10))
+
+test
+                   
+preTest <- predict(modelOne, test)
+cat("With a losing team point margin of 10 points, the predicted winner will be around the difference of", preTest, ".\n")
+
+# Adding a new column to the data set
+dataSelection$Predicted_Column_One <- preTest
+
+dataSelection
+
+# Creating a bar plot with the new column
+
+barplot_predict_one <- ggplot(data = dataSelection, mapping = aes(y = Losing.Pts, x = Winning.Pts, fill = Winner, bins = 5)) + geom_bar(stat = "identity") + labs(title = "Bar Prediction Plot One", subtitle = "Super Bowl Historics\nWinning Team Points Vs. Losing Team Points", x = "Winning Points", y = "Losing Points", caption = "Data World Data Set\n Predicted Value: 42.53")
+
+# Adding the predicted value in bar plot.
+
+barplot_predict_one + annotate("text", x = 42.53968, y = 7, label = "42.53")
+
+cat("\nTherefore, the one predicted winner will be around the predicted value. Which makes either Washington Redskin or Seattle Seahawks the predicted winner of the super bowl.")
+```
+
+## Plotting my Scatter Plot
+
+```{r}
+ggplot(data = dataSelection, mapping = aes(x = Winning.Pts, y = Point.Difference, color = Winner, size = 6)) + geom_point() + labs(title = "Point Difference Vs. Winning Points", subtitle = "Super Bowl Historics\nPoint Difference Greater Than 25", x = "Winning Point Margin", y = "Point Difference Margin", caption = "Data World Set")
+```
+
+## Predicting my Second Super Bowl Winner
+
+```{r}
+# Build a linear Regression
+
+modelTwo <- lm(Winning.Pts ~ Losing.Pts, data = dataSelection)
+
+modelTwo
+
+# Adding Prediction 
+
+super_predict_two <- predict(modelTwo, interval = "prediction")
+
+super_predict_two
+
+superFinalPredict_two <- cbind(dataSelection, super_predict_two)
+
+superFinalPredict_two
+
+# Regression Line
+
+predictionTwo <- ggplot(data = superFinalPredict_two, mapping = aes(x = Winning.Pts, y = Losing.Pts)) + geom_point(mapping = aes(color = Winner, size = Winner)) + labs(title = "Draft Prediction Plot Two", subtitle = "Regression Line & Super Bowl Historics\nWinning Team Points Vs. Losing Team Points", x = "Winning Points", y = "Losing Points", caption = "Data World Dat Set") + stat_smooth(method = lm)
+
+predictionTwo
+```
+
+```{r}
+# Prediction Test Two
+
+test_two <- data.frame(Losing.Pts = c(17))
+
+test_two
+                   
+preTest_Two <- predict(modelTwo, test_two)
+cat("With the Losing team losing by a  margin of 17 points, the predicted winner will be around the difference of", preTest_Two, ".\n\n")
+
+# Adding a new column to the data set
+dataSelection$Predicted_Column_Two <- preTest_Two
+
+dataSelection
+
+# Creating a scatter plot with the new column
+
+scatter_plot_two <- ggplot(data = dataSelection, mapping = aes(y = Point.Difference, x = Winning.Pts)) + geom_point(mapping = aes(color = Winner, size = Winner)) + labs(title = "Scatter Prediction Plot One", subtitle = "Super Bowl Historics\nWinning Team Points Vs. Point Difference", x = "Winning Points", y = "Point Difference", caption = "Data World Data Set\n Predicted Value: 48.45")
+
+# Adding the predicted valuer in scatter plot 
+
+scatter_plot_two + annotate("text", x = 48.45635, y = 25.5, label = "48.45")
+
+cat("\nTherefore, the one predicted winner will be around the predicted value. Which makes the Tampa Bay Buccaneers the predicted winner of the super bowl")
+```
+
+## Plotting my Violin Plot
+
+```{r}
+ggplot(data = dataSelection, mapping = aes(x = Winning.Pts, y = Point.Difference)) + geom_violin(fill = "blue", color = "black") + labs(title = "Winning Margin Vs. Point Difference", subtitle = "Super Bowl Historics\nPoint Difference Greater Than 25", x = "Winning Point Margin", y = "Point Difference Margin", caption = "Data World Set")
+```
+
+## Predicting my Third Super Bowl Winner
+
+```{r}
+# Build a linear Regression
+
+modelThree <- lm(Point.Difference ~ Winning.Pts, data = dataSelection)
+
+modelThree
+
+# Adding Prediction 
+
+super_predict_three <- predict(modelThree, interval = "prediction")
+
+super_predict_three
+
+superFinalPredict_three <- cbind(dataSelection, super_predict_three)
+
+superFinalPredict_three
+
+# Regression Line
+
+predictionThree <- ggplot(data = superFinalPredict_three, mapping = aes(x = Point.Difference, y = Losing.Pts)) + geom_point(mapping = aes(color = Winner, size = Winner)) + stat_smooth(method = lm) + labs(title = "Draft Prediction Plot Three", subtitle = "Regression Line & Super Bowl Historics\nPoint Difference Vs. Losing Team Points", x = "Point Difference", y = "Losing Points", caption = "Data World Dat Set")
+
+predictionThree
+```
+
+
+```{r}
+# Prediction Test Three
+
+test_three <- data.frame(Winning.Pts = c(45))
+
+test_three
+                   
+preTest_Three <- predict(modelThree, test_three)
+cat("With the Winning Team winning by a point margin of 45 points, the predicted winner will be around the difference of", preTest_Three, ".\n\n")
+
+# Adding a new column to the data set
+dataSelection$Predicted_Column_Three <- preTest_Three
+
+dataSelection
+
+# Creating a box plot with the new column
+
+boxplot_predict_three <- ggplot(data = dataSelection, mapping = aes(y = Point.Difference, x = Winning.Pts, color = Winner, size = Winner)) + geom_boxplot() +labs(title = "Box Plot Prediction One", subtitle = "Super Bowl Historics\nWinning Team Points Vs. Point Difference", x = "Winning Points", y = "Point Difference", caption = "Data World Data Set\n Predicted Value: 33.22")
+
+# Adding the predicted valuer in scatter plot 
+
+boxplot_predict_three + annotate("text", x = 33.22, y = 25, label = "33.22")
+
+cat("\nTherefore, the one predicted winner will be around the predicted value. Which makes the Green Bay Packers the predicted winner of the super bowl")
+```
+
