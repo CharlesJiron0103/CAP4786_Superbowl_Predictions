@@ -11,6 +11,7 @@ Predicting my First Super Bowl Winner
 ![image](https://user-images.githubusercontent.com/75334406/152280107-cf1d6a8f-c72f-4595-b007-e50ba101c54e.png)
 
 Prediction One: Bar Graph
+
 With a losing team point margin of 10 points, the predicted winner will be around the difference of 42.53968.
 
 ![image](https://user-images.githubusercontent.com/75334406/152280170-8633fe63-6f8c-48d9-a8a4-66f3793bb6d8.png)
