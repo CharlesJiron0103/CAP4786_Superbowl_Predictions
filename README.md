@@ -14,7 +14,7 @@ Prediction One: Bar Graph
 
 With a losing team point margin of 10 points, the predicted winner will be around the difference of 42.53968.
 
-![image](https://user-images.githubusercontent.com/75334406/152280170-8633fe63-6f8c-48d9-a8a4-66f3793bb6d8.png)
+![image](https://user-images.githubusercontent.com/75334406/152281017-b7477733-0bfc-4639-ade4-415e638720bd.png)
 
 Therefore, the one predicted winner will be around the predicted value. 
 Which makes either Washington Redskin or Seattle Seahawks the predicted winner of the super bowl.
